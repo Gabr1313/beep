@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Beep</title>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <meta name="author" content= "Gabriele Baietta"/>
+        <link rel="icon" href="assets/img/icon.png">
+        <link rel="stylesheet" href="assets/css/style2.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Beep</h1>
+        </header>
+        <main>
+            <article>
+                <p>I birilli sono: ***</p>
+                <p>La pista è lunga: ***</p>
+            </article>
+            <form id="parte-1">
+                <section>
+                    <p>Velocità: </p>
+                    <button class="cambia" onclick="cambiaS(1,-1)">↺</button>
+                    <input type="number" placeholder="Velocità">
+                    <select >
+                        <option>m/s</option>
+                        <option>km/h</option>
+                    </select>
+                </section>
+                <section>
+                    <p>Tempo fase: </p>
+                    <button class="cambia" onclick="cambiaS(3,-1)">↺</button>
+                    <input type="number" placeholder="Tempo fase">
+                    <select >
+                        <option>s</option>
+                        <option>m</option>
+                    </select>
+                </section>
+                <button class="aggiungi" onclick="aggiungiSessione()">+</button>
+            </form>
+            <form id="parte-2">
+                <section>
+                    <p>Recupero: </p>
+                    <input type="number" placeholder="Recupero">
+                    <select>
+                        <option>s</option>
+                        <option>m</option>
+                    </select>
+                </section>
+                <button class="aggiungi" onclick="aggiungiRecupero()">+</button>
+            </form>
+            <div></div>
+        </main>
+            <footer>
+                <button id="start" onclick="comandiStart()">Start</button>
+            </footer>
+        </body>
+    <script src="assets/js/script2.js"></script>
+</html>

@@ -1,0 +1,114 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;   
+    text-decoration: none;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+body{
+    width: 500px;
+    margin: auto;
+}
+
+h1{
+    text-align: center;
+    margin: 20px;
+}
+
+form input, footer button{
+    float: left;
+    width: 86%;
+    margin: 10px 1% 10px 0;
+    padding: 10px;
+    border: 1px solid lightgray;
+}
+
+form select{
+    float: right;
+    width: 12%;
+    height: 39px;
+    margin: 10px 0 10px 1%;
+    border: 1px solid lightgray;
+}
+
+footer button{
+    width: 100%;
+}
+
+article p{
+    color: red;
+}
+
+form section{
+    float: left;
+    width: 44%;
+    margin-right: 1%;
+}
+
+form input{
+    width: 71%;
+}
+
+form select{
+    width: 26%;
+    margin: 10px 1% 10px 1%;
+}
+
+.aggiungi{
+    float: right;
+    width: 8%;
+    height: 39px;
+    margin: 31px 0 0 0;
+    background-color: white;
+    border: 1px solid lightgray;
+    font-size: 18px;
+}
+
+form {
+    overflow: hidden;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px dashed black;
+    border-radius: 10px;
+}
+
+section p{
+    float: left;
+}
+
+.cambia{
+    float: left;
+    text-align: center;
+    width: 31px;
+    height: 31px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 100px;
+    margin: -3px 0 -7px 7px;
+    font-size: 20px;
+}
+
+div{
+    border-top: 1px solid black;
+}
+
+.parte section{
+    width: 40%;
+}
+
+.parte aside{
+    float: left;
+    width: 7%;
+    margin-top: -5px ;
+    margin-right: 10px;
+}
+
+.freccia{
+    float: left;
+    margin: 2px 0;
+    padding: 0 10px;
+    background-color: white;
+    border: 1px solid lightgray;
+    font-size: 27px;
+}
