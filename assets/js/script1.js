@@ -12,7 +12,7 @@ comandiNext = function (){
         window.alert("Inserisci i dati validi.");
     } else {
         //carica pagina2 passando i parametri
-        window.location.href = 'pagina2.html?stringa='+numeroBirilli+'-'+lunghezzaGiro+'-'+lunghezzaGiroUM;
+        window.location.href = 'index2.html?stringa='+numeroBirilli+'-'+lunghezzaGiro+'-'+lunghezzaGiroUM;
     }
 }
 

@@ -256,7 +256,7 @@ comandiStart = function (){
     lunghezza="***";
     conferma= window.confirm('La durata della prova è: '+durata+'.\nLa lunghezza della prova è: '+lunghezza+'.\nQuando vuoi iniziare premi su OK.')
         if (conferma){
-            window.location.href = 'pagina3.html?stringa=' + stringa;
+            window.location.href = 'index3.html?stringa=' + stringa;
         }
 }
 
