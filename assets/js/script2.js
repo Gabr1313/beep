@@ -1,21 +1,20 @@
-aggiungiSessione = function (){
-    //salva dati
-    let var1, var2, var3, var4, p1, p2, form, t1, t2;
+aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la sessione modificabile
+    let var1, var2, var3, var4, p1, p2, form, t1, t2,dove,parte;
     form=document.getElementById("parte-1");
     var1=form.children[0].children[2].value;
     var2=form.children[0].children[3].value;
-    if (var2==="m/s"){t1=1}else{t1=2};
+    if (var2==="m/s" || var2==="km/h"){t1=1}else if (var2==="sec" || var2==="min"){t1=2};
     var3=form.children[1].children[2].value;
     var4=form.children[1].children[3].value;
-    if (var2==="s"){t2=3}else{t2=4};
+    if (var4==="sec" || var4==="min"){t2=3}else if (var4==="m" || var4==="km"){t2=4}else{t2=5};
     p1=form.children[0].children[0].innerHTML;
     p2=form.children[1].children[0].innerHTML;
     if (!var1 || !var3 || var1 < 0 || var3 < 0){
         window.alert("Inserisci dei valori validi per la sessione.");
         return;
     }
-    let dove = document.getElementsByTagName("main")[0].children[3];
-    let parte=document.createElement('form');
+    dove = document.getElementsByTagName("main")[0].children[3];
+    parte=document.createElement('form');
     parte.className='parte';
     parte.id="parte"+i;
     parte.innerHTML=`
@@ -26,25 +25,23 @@ aggiungiSessione = function (){
     <section>
         <p>${p1}</p>
         <button class="cambia" onclick="cambiaS(${t1},${i})">↺</button>
-        <input type="number" value="${var1}">
+        <input type="number" step=any value="${var1}">
         <select>
-            <option>m/s</option>
-            <option>km/h</option>
         </select>
     </section>
     <section>
         <p>${p2}</p>
         <button class="cambia" onclick="cambiaS(${t2},${i})">↺</button>
-        <input type="number" value="${var3}">
+        <input type="number" step=any value="${var3}">
         <select>
-            <option>s</option>
-            <option>m</option>
         </select>
     </section>
     <button class="aggiungi" onclick="rimuoviSessione(${i})">-</button>
     `
     select=parte.getElementsByTagName("select");
+    select[0].innerHTML=form.children[0].children[3].innerHTML;
     select[0].value=var2;
+    select[1].innerHTML=form.children[1].children[3].innerHTML;
     select[1].value=var4;
 
     parte.onsubmit = (event) => { event.preventDefault() }
@@ -53,7 +50,7 @@ aggiungiSessione = function (){
     i+=1;
 }
 
-rimuoviSessione = function (posizione){
+rimuoviSessione = function (posizione){ //rimuove la sessione 
     let sessione,j;
     sessione = document.getElementById("parte"+posizione);
     div=sessione.parentNode;
@@ -65,8 +62,7 @@ rimuoviSessione = function (posizione){
     }
 };
 
-aggiungiRecupero = function (){
-    //salva dati
+aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il recupero modificabile
     let form, var1, var2;
     form=document.getElementById("parte-2");
     var1=form.children[0].children[1].value;
@@ -86,10 +82,10 @@ aggiungiRecupero = function (){
     </aside>
     <section>
         <p>Recupero: </p>
-        <input type="number" value="${var1}">
+        <input type="number" step=any value="${var1}">
         <select>
-            <option>s</option>
-            <option>m</option>
+            <option>min</option>
+            <option>sec</option>
         </select>
     </section>
     <button class="aggiungi" onclick="rimuoviSessione(${i})">-</button>
@@ -103,11 +99,7 @@ aggiungiRecupero = function (){
     i+=1;
 }
 
-cambiaS = function (tipo,posizione){
-    //manca la conversione dei dati! MA NON PENSO MAI LA METTERò 
-    //perchè comunque non potrei scegliere e quale dei 2 valori arrivare ecc.
-    
-    //fa lo switch tra le varie tipologie di immissione dati
+cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di immissione dati  
     let form=document.getElementById("parte"+posizione);
     let j=0;
     if (form.children[0].tagName!="SECTION"){j=1} //quando ci sono le freccine
@@ -119,12 +111,12 @@ cambiaS = function (tipo,posizione){
         let select = section.children[3];
         p.innerHTML = 'Tempo al giro: ';
         button.onclick = () => cambiaS(2,posizione) ;
-        input.id = 'tempoAlGiro';
-        input.placeholder = 'Tempo al giro'
-        select.id = 'tempoAlGiroUM'
+        input.placeholder = 'Tempo al giro';
+        input.setAttribute("type", "number");
+        input.step="any";
         select.innerHTML= `
-        <option>s</option>
-        <option>m</option>
+        <option>sec</option>
+        <option>min</option>
         `
     }
     if (tipo===2){
@@ -135,12 +127,12 @@ cambiaS = function (tipo,posizione){
         let select = section.children[3];
         p.innerHTML = 'Velocità: ';
         button.onclick = () => cambiaS(1,posizione) ;
-        input.id = 'velocità';
-        input.placeholder = 'Velocità'
-        select.id = 'velocitàUM'
+        input.placeholder = 'Velocità';
+        input.setAttribute("type", "number");
+        input.step="any";
         select.innerHTML= `
-        <option>m/s</option>
         <option>km/h</option>
+        <option>m/s</option>
         `
     }
     if (tipo===3){
@@ -151,12 +143,12 @@ cambiaS = function (tipo,posizione){
         let select = section.children[3];
         p.innerHTML = 'Distanza fase: ';
         button.onclick = () => cambiaS(4,posizione) ;
-        input.id = 'distanzaFase';
-        input.placeholder = 'Distanza Fase'
-        select.id = 'distanzaFaseUM'
+        input.placeholder = 'Distanza Fase';
+        input.setAttribute("type", "number");
+        input.step="any";
         select.innerHTML= `
-        <option>m</option>
         <option>km</option>
+        <option>m</option>
         `
     }
     if (tipo===4){
@@ -165,19 +157,33 @@ cambiaS = function (tipo,posizione){
         let button = section.children[1];
         let input = section.children[2];
         let select = section.children[3];
+        p.innerHTML = 'Numero giri: ';
+        button.onclick = () => cambiaS(5,posizione) ;
+        input.placeholder = 'Numero giri';
+        input.setAttribute("type", "number");
+        input.step="any";
+        select.id = 'numeroGiriUM';
+        select.innerHTML= ``
+    }
+    if (tipo===5){
+        let section = form.children[1+j];
+        let p = section.children[0];
+        let button = section.children[1];
+        let input = section.children[2];
+        let select = section.children[3];
         p.innerHTML = 'Tempo fase: ';
         button.onclick = () => cambiaS(3,posizione) ;
-        input.id = 'tempoFase';
-        input.placeholder = 'Tempo fase'
-        select.id = 'tempoFaseUM'
+        input.placeholder = 'Tempo fase';
+        input.setAttribute("type", "number");
+        input.step="any";
         select.innerHTML= `
-        <option>s</option>
-        <option>m</option>
+        <option>min</option>
+        <option>sec</option>
         `
     }
 }
 
-cambiaIndice = function(form, posizione){
+cambiaIndice = function(form, posizione){//cambia l'indice di una sessione o di un recupero per chiamare le funzioni in maniera adeguata
     form.id='parte'+posizione;
     if (form.children[1].children[0].innerHTML==="Recupero: "){
         form.children[0].children[0].onclick= () => sopra(posizione,-1);
@@ -201,7 +207,7 @@ cambiaIndice = function(form, posizione){
     return form;
 }
 
-sopra = function(posizione1, delta){
+sopra = function(posizione1, delta){//sposta sopra o sotto le sessioni/i recuperi
     //se delta=-1 --> sopra, se delta=1 -->sotto
     let form1, posizione2, form2, t, j;
     posizione2=posizione1+delta;
@@ -234,11 +240,9 @@ sopra = function(posizione1, delta){
     vecchioDiv.parentNode.removeChild(vecchioDiv);
 }
 
-comandiStart = function (){
-    //passa alla pagina successiva
-    //prima creo la stringa, poi il resto va bene (vedi in basso il come)
-    let contenitore,j,form, conferma, durata, lunghezza;
-
+comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e durata, chiedo conferma e passo alla pagina successiva
+    let stringa,contenitore,j,form, conferma, durata, lunghezza, tempo, lunghezzaPista,distanza,velocità,tempoAlGiro;
+    stringa = window.location.href.split('?')[1].split('=')[1]
     contenitore=document.getElementsByTagName("div")[0];
     for (j=0;j<contenitore.childElementCount;j++){
         form=contenitore.children[j];
@@ -247,14 +251,78 @@ comandiStart = function (){
         } else {
             stringa=stringa+';'+form.children[1].children[2].value+'-'+form.children[1].children[3].value+'-'+form.children[2].children[2].value+'-'+form.children[2].children[3].value;
         };
+    //come è strutturata la stringa
+    // nB-lG-lGUM;v-vUM-tS-tSUM;r-rUM
+    //  <--3-->  ;   <--4-->   ; <--2-->
+    //poi smisto la tipologia in base alla lunghezza e all'unità di misura
     }
     if (stringa.split(';').length<=1){
         window.alert("Inserisci almeno una sessione.");
         return;
     }
-    durata="***";
-    lunghezza="***";
-    conferma= window.confirm('La durata della prova è: '+durata+'.\nLa lunghezza della prova è: '+lunghezza+'.\nQuando vuoi iniziare premi su OK.')
+    durata=0;
+    lunghezza=0;
+    if (stringa.split(";")[0].split("-")[2]==="m"){
+        lunghezzaPista=parseFloat(stringa.split(";")[0].split("-")[1])
+    } else {
+        lunghezzaPista=parseFloat(stringa.split(";")[0].split("-")[1])*1000
+    }
+    for (elem of stringa.split(";")){
+        tempo=0;
+        distanza=0;
+        velocità=0;
+        tempoAlGiro=0;
+        numeroGiri=0;
+        dati=elem.split("-");
+        if (dati.length===4){//se abbiamo una sessione
+            if (dati[1]==="m/s"){ //controllo il primo dato immesso
+                velocità=parseFloat(dati[0]);
+            } else if (dati[1]==="km/h"){
+                velocità=parseFloat(dati[0]/3.6);
+            } else {
+                if (dati[1]==="sec"){
+                    tempoAlGiro=parseFloat(dati[0]);
+                } else if (dati[1]==="min"){
+                    tempoAlGiro=parseFloat(dati[0])/60;
+                }
+                velocità=lunghezzaPista/tempoAlGiro;
+            }
+            if (dati[3]==="sec"){ //controllo il secondo dato immesso
+                tempo=parseFloat(dati[2]);
+            } else if (dati[3]==="min"){
+                tempo=parseFloat(dati[2])*60; 
+            } else {
+                if (dati[3]==="m"){
+                    distanza=parseFloat(dati[2]);
+                } else if (dati[3]==="km"){
+                    distanza=parseFloat(dati[2])*1000;
+                } else if (dati[3]===""){
+                    distanza=parseFloat(dati[2])*lunghezzaPista;
+                }
+                tempo=distanza/velocità;
+            }
+            distanza=velocità*tempo;
+        } else if (dati.length===2) {//se abbiamo un recupero
+            if (dati[1]==="sec"){
+                tempo=parseFloat(dati[0]);
+            } else if (dati[1]==="min"){
+                tempo=parseFloat(dati[0]*60);
+            }
+        };
+        lunghezza+=distanza;
+        durata+=tempo;
+    };
+    if (durata-60>0){
+        durata=((parseFloat(durata)/60).toFixed(2))+" min";
+    } else {
+        durata=(parseFloat(durata).toFixed(0))+" sec";
+    }
+    if (lunghezza-1000>0){
+        lunghezza=((parseFloat(lunghezza)/1000).toFixed(2))+" km";
+    } else {
+        lunghezza=(parseFloat(lunghezza).toFixed(0))+" m";
+    }
+    conferma= window.confirm('La durata totale della prova è: '+durata+'.\nLa lunghezza totale della prova è: '+lunghezza+'.\nSe vuoi passare alla pagina successiva premi su OK.')
         if (conferma){
             window.location.href = 'index3.html?stringa=' + stringa;
         }
@@ -266,23 +334,17 @@ let form = document.getElementsByTagName("form");
 form[0].onsubmit = (event) => { event.preventDefault() }
 form[1].onsubmit= (event) => { event.preventDefault() }
 
-
-let stringa;
-//come è strutturata la stringa
-// nB-lG-lGUM;v-vUM-tS-tSUM;r-rUM
-//  <--3-->  ;     <--4-->     ; <--2-->
-//poi smisto la tipologia in base alla lunghezza e all'unità di misura
-
-if(stringa = window.location.href.split('?')[1].split('=')[1]){
+if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che il link contenga i dati che servono
+    //Penso bisognerebbe controllarlo meglio in futuro tuttavia
     let input,article;
     article=document.getElementsByTagName("article")[0];
     input=stringa.split('-');
-    article.children[0].innerHTML="I birilli sono "+input[0];
-    article.children[1].innerHTML="La pista è lunga "+input[1]+input[2];
+    article.children[0].innerHTML="I birilli sono "+input[0]+".";
+    article.children[1].innerHTML="La pista è lunga "+input[1]+input[2]+".";
 } else {
     window.alert("Torna alla pagina precedente, non hai ancora inserito i dati della pista!");
-    window.location.href = 'pagina1.html';
+    window.location.href = 'index.html';
 }
 
+//una variabile globale che mi serve per le varie funzioni, in particolare per riconoscere sessioni/recuperi
 let i=0;
-

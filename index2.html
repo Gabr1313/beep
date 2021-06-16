@@ -9,6 +9,7 @@
     </head>
     <body>
         <header>
+            <p>Made by Gabriele Baietta</p>
             <h1>Beep</h1>
         </header>
         <main>
@@ -19,20 +20,20 @@
             <form id="parte-1">
                 <section>
                     <p>Velocità: </p>
-                    <button class="cambia" onclick="cambiaS(1,-1)">↺</button>
+                    <button class="cambia" step=any onclick="cambiaS(1,-1)">↺</button>
                     <input type="number" placeholder="Velocità">
                     <select >
-                        <option>m/s</option>
                         <option>km/h</option>
+                        <option>m/s</option>
                     </select>
                 </section>
                 <section>
                     <p>Tempo fase: </p>
                     <button class="cambia" onclick="cambiaS(3,-1)">↺</button>
-                    <input type="number" placeholder="Tempo fase">
-                    <select >
-                        <option>s</option>
-                        <option>m</option>
+                    <input type="number" step=any placeholder="Tempo fase">
+                    <select>
+                        <option>min</option>
+                        <option>sec</option>
                     </select>
                 </section>
                 <button class="aggiungi" onclick="aggiungiSessione()">+</button>
@@ -40,10 +41,10 @@
             <form id="parte-2">
                 <section>
                     <p>Recupero: </p>
-                    <input type="number" placeholder="Recupero">
+                    <input type="number" step=any placeholder="Recupero">
                     <select>
-                        <option>s</option>
-                        <option>m</option>
+                        <option>min</option>
+                        <option>sec</option>
                     </select>
                 </section>
                 <button class="aggiungi" onclick="aggiungiRecupero()">+</button>

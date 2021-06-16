@@ -11,9 +11,16 @@ body{
     margin: auto;
 }
 
+header p{
+    float: right;
+    font-size: 13px;
+    font-style: italic;
+}
+
 h1{
     text-align: center;
     margin: 20px;
+    clear: both;
 }
 
 form input, footer button{
