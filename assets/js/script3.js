@@ -176,22 +176,8 @@ window.onload=function(){ //leggo la URL e creo le sessioni grafiche
     }
 
     audio = new Audio('assets/audio/beep-07a.mp3');
-    emettiBeep(traccia,audio);
-
-
-
-
-
-
-
-
-
-
-
-    audio = new Audio('assets/audio/beep-07a.mp3');
-    
+    emettiBeep(traccia,audio);  
 }
 
-
-//SERVE ARROTONDARE I TEMPI, DEVO DECIDERE SE PER ECCESSO O PER DIFETTO, MI SA FARò IL PRIMO CHE CAPITA
-
+//manca ancora che si illumina la sessione in corso
+//manca pure il tempo rimanente alla fine della sessione e il tempo rimanente totale
