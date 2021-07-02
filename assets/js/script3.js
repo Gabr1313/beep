@@ -143,12 +143,17 @@ emettiBeep = function (delta){
 }
 
 play = function (){
+    if (index===traccia.length){
+        location.reload(); 
+    }
+    illumina(document.getElementsByTagName("button")[0]);
     pausa=false;
     emettiBeep(deltaX);
     deltaX=0;
 }
 
 pause = function (){
+    illumina(document.getElementsByTagName("button")[1]);
     pausa=true;
     if (sessione){
         deltaX=beepIndex;
@@ -159,6 +164,8 @@ pause = function (){
 }
 
 previous = function (){
+    illumina(document.getElementsByTagName("button")[2]);
+    if (pausa===true){index++}
     pausa=true;
     if (sessione){
         setTimeout(function(){
@@ -181,6 +188,8 @@ previous = function (){
 }
 
 next = function (){
+    illumina(document.getElementsByTagName("button")[3]);
+    if (pausa===true){index++}
     pausa=true;
     if (sessione){
         setTimeout(function(){
@@ -193,9 +202,12 @@ next = function (){
     } 
 }
 
-
-
-
+illumina = function (tag){
+    tag.style.backgroundColor = "lightgreen";
+    setTimeout(function(){
+        tag.style.backgroundColor = "white";
+    },200);
+}
 
 if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che il link contenga i dati che servono
     //Penso bisognerebbe controllarlo meglio in futuro tuttavia
