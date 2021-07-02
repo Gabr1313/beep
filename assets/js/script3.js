@@ -93,25 +93,48 @@ creaTracciaR = function (pezzo){
     }
 }
 
-emettiBeep = function (traccia,audio){
+emettiBeep = function (delta){
+    index++;
     try {
         let pezzo,intervalloBeep,numeroBeep;
-        pezzo=traccia.shift();
+        beepIndex=0;
+        pezzo=traccia[index];
+        //console.log(pezzo+" "+delta)
         if (pezzo.length===2){
+            sessione=true;
             intervalloBeep=pezzo[0];
             numeroBeep=pezzo[1];
-            audio.play();//posso cambiare il suono del primo beep
+            audio.play();
+            //console.log("bip")
             let intervalloTempo=setInterval(function(){
+                if (pausa){
+                    clearInterval(intervalloTempo); //non posso mettere solo il return perchè altrimenti poi riparte
+                    return; //serve per non emettere il beep di troppo dopo il click
+                }
                 audio.play();
+                //console.log("bip")
+                beepIndex++;
                 numeroBeep--;
-                if(numeroBeep<=0){
+                if(numeroBeep<=delta){
                   clearInterval(intervalloTempo);
-                  emettiBeep(traccia,audio);
+                  emettiBeep(0);
                 }
             },intervalloBeep*1000);
         } else /*if (pezzo.length===1)*/{
+            sessione=false;
             recupero=pezzo[0];
-            setTimeout(function(){emettiBeep(traccia,audio);},recupero*1000);
+            secondi=0;
+            let intervalloTempo=setInterval(function(){
+                if (pausa){//idem leggi sopra
+                    clearInterval(intervalloTempo);
+                    return;
+                }
+                secondi++;
+                if(secondi+delta>=recupero){
+                  clearInterval(intervalloTempo);
+                  emettiBeep(0);
+                }
+            },1000);
         }
     }
     catch{
@@ -120,23 +143,54 @@ emettiBeep = function (traccia,audio){
 }
 
 play = function (){
-
+    pausa=false;
+    emettiBeep(deltaX);
+    deltaX=0;
 }
 
 pause = function (){
-
-}
-
-quit = function (){
-
+    pausa=true;
+    if (sessione){
+        deltaX=beepIndex;
+    } else {
+        deltaX=secondi;
+    }
+    index--;
 }
 
 previous = function (){
-
+    pausa=true;
+    if (sessione){
+        setTimeout(function(){
+            if(beepIndex<=2){index--;}
+            index--;
+            if (index===-2){
+                index=-1;
+            }
+            play();
+        },traccia[index][0]*1000);  // aspettare questo tempo è necessario se no succedono casini: 
+                                    // non ricomincerebbe il ciclo o non si accorgerebbe che la sessione precedente è terminata 
+                                    // e quindi ne partirebbero 2 in contemporanea
+    } else {
+        setTimeout(function(){
+            if(secondi<=4){index--;}
+            index--;
+            play();
+        },1000); //idem sopra
+    }
 }
 
 next = function (){
-
+    pausa=true;
+    if (sessione){
+        setTimeout(function(){
+            play();
+        },traccia[index][0]*1000); //idem sopra
+    } else {
+        setTimeout(function(){
+            play();
+        },1000); //idem sopra
+    } 
 }
 
 
@@ -156,7 +210,7 @@ if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che i
 }
 
 window.onload=function(){ //leggo la URL e creo le sessioni grafiche
-    let audio,traccia,numeroBirilli,lunghezzaPista;
+    let numeroBirilli,lunghezzaPista;
     traccia=[]
     numeroBirilli=stringa.split(";")[0].split('-')[0];
     if (stringa.split(";")[0].split('-')[2]==="m"){
@@ -174,10 +228,15 @@ window.onload=function(){ //leggo la URL e creo le sessioni grafiche
             traccia.push(creaTracciaR(element));
         }
     }
-
-    audio = new Audio('assets/audio/beep-07a.mp3');
-    emettiBeep(traccia,audio);  
+    emettiBeep(0);  
 }
+
+let traccia,index,audio,pausa,beepIndex,deltaX,secondi,sessione;
+index=-1;
+pausa=false;
+audio = new Audio('assets/audio/beep-07a.mp3');
+deltaX=0;
 
 //manca ancora che si illumina la sessione in corso
 //manca pure il tempo rimanente alla fine della sessione e il tempo rimanente totale
+//posso pure mettere l'ultimo beep diverso
