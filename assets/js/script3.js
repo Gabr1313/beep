@@ -105,14 +105,12 @@ creaTracciaR = function (pezzo){
 }
 
 emettiBeep = function (delta){
-    index++;
     audio2.play();
     try {
         let pezzo,intervalloBeep,numeroBeep,percentuale,deltaPercentuale;
         pezzo=traccia[index];
         if (pezzo.length===2){
             beepIndex=0;
-            sessione=true;
             intervalloBeep=pezzo[0];
             numeroBeep=pezzo[1];
             deltaPercentuale=100/numeroBeep;
@@ -130,11 +128,11 @@ emettiBeep = function (delta){
                 document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
                 if(numeroBeep<=delta){
                   clearInterval(intervalloTempo);
+                  index++;
                   emettiBeep(0);
                 }
             },intervalloBeep*1000);
         } else /*if (pezzo.length===1)*/{
-            sessione=false;
             recupero=pezzo[0];
             secondi=0;
             deltaPercentuale=100/recupero;
@@ -150,12 +148,14 @@ emettiBeep = function (delta){
                 document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
                 if(secondi+delta>=recupero){
                   clearInterval(intervalloTempo);
+                  index++;
                   emettiBeep(0);
                 }
             },1000);
         }
     }
     catch{
+        pausa=true;
         return;
     }
 }
@@ -177,72 +177,69 @@ pause = function (){
         funzioneInCorso=true;
         illuminaV(document.getElementsByTagName("button")[1]);
         pausa=true;
-        if (sessione){
+        if (traccia[index].length===2){
             deltaX=beepIndex;
+            aspetta=traccia[index][0]*1000
         } else {
             deltaX=secondi;
+            aspetta=1000
         }
-        console.log(index)
-        if (sessione){aspetta=traccia[index][0]*1000}
-        else {aspetta=1000};
         setTimeout(function(){funzioneInCorso=false;},aspetta);  
-        index--;
     }
 }
 
 restart = function (){
-    if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[2]);}
+    if (funzioneInCorso || index===traccia.length){illuminaR(document.getElementsByTagName("button")[2]);}
     else {
         funzioneInCorso=true;
         let aspetta;
         illuminaV(document.getElementsByTagName("button")[2]);
-        if (pausa===true){index++}
         pausaCopia=pausa;
         pausa=true;
-        if (sessione){aspetta=traccia[index][0]*1000}
+        if (index===traccia.length){index--}
+        if (traccia[index].length===2){aspetta=traccia[index][0]*1000}
         else {aspetta=1000};
         // aspettare questo tempo è necessario se no succedono casini: 
         // non ricomincerebbe il ciclo o non si accorgerebbe che la sessione precedente è terminata 
         // e quindi ne partirebbero 2 in contemporanea
         setTimeout(function(){
-            index--;
             funzioneInCorso=false;
             if (!pausaCopia){
                 pausa=false;
-                emettiBeep(deltaX);
+                emettiBeep(0);
                 deltaX=0;
             }
             else {
                 deltaX=0;
-                document.getElementsByClassName('progressBarFull')[index+1].style.width="0%"
+                document.getElementsByClassName('progressBarFull')[index].style.width="0%"
             }
         },aspetta);  
     }
 }
 
 next = function (){
-    if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[3]);}
+    if (funzioneInCorso || index===traccia.length){illuminaR(document.getElementsByTagName("button")[3]);}
     else {
         let aspetta;
         funzioneInCorso=true;
         illuminaV(document.getElementsByTagName("button")[3]);
-        if (pausa===true){index++}
         pausaCopia=pausa;
         pausa=true;
-        if (sessione){aspetta=traccia[index][0]*1000}
+        if (traccia[index].length===2){aspetta=traccia[index][0]*1000}
         else {aspetta=1000};
         //idem sopra
         setTimeout(function(){
             funzioneInCorso=false;
+            index++;
             if (!pausaCopia){
-                document.getElementsByClassName('progressBarFull')[index].style.width="100%";
+                document.getElementsByClassName('progressBarFull')[index-1].style.width="100%";
                 pausa=false;
-                emettiBeep(deltaX);
+                emettiBeep(0);
                 deltaX=0;
             }
             else {
                 deltaX=0;
-                document.getElementsByClassName('progressBarFull')[index].style.width="100%"
+                document.getElementsByClassName('progressBarFull')[index-1].style.width="100%"
             }
         },aspetta);
     } 
@@ -255,38 +252,34 @@ previous = function (){
         let aspetta;
         funzioneInCorso=true;
         illuminaV(document.getElementsByTagName("button")[4]);
-        if (pausa===true){index++}
         pausaCopia=pausa;
         pausa=true;
-        if (sessione){aspetta=traccia[index][0]*1000}
+        if (index===traccia.length){aspetta=0}
+        else if (traccia[index].length===2){aspetta=traccia[index][0]*1000}
         else {aspetta=1000};
         //idem sopra
         setTimeout(function(){
             funzioneInCorso=false;
-            index-=2;
-            if (index===-2){index=-1}
+            index--;
+            if (index===-1){index=0}
             if (!pausaCopia){
-                document.getElementsByClassName('progressBarFull')[index+2].style.width="0%";
+                document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";
                 pausa=false;
-                emettiBeep(deltaX);
+                emettiBeep(0);
                 deltaX=0;
             }
             else {
                 deltaX=0;
-                document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";
-                document.getElementsByClassName('progressBarFull')[index+2].style.width="0%";
+                document.getElementsByClassName('progressBarFull')[index+0].style.width="0%";
+                if (index!==traccia.length-1){document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";}
             }
         },aspetta);
     }
 }
 
 reset = function (){
-    if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[0]);}
-    else {
-        illuminaV(document.getElementsByTagName("button")[5]);
-        pausa=true;
-        location.reload(); 
-    }
+    illuminaV(document.getElementsByTagName("button")[5]);
+    location.reload(); 
 }
 
 illuminaV = function (tag){
@@ -337,12 +330,13 @@ window.onload=function(){ //leggo la URL e creo le sessioni grafiche
     emettiBeep(0);  
 }
 
-let traccia,index,audio,pausa,beepIndex,deltaX,secondi,sessione,funzioneInCorso;
-index=-1;
+let traccia,index,audio,pausa,beepIndex,deltaX,secondi,funzioneInCorso;
+index=0;
 pausa=false;
 audio = new Audio('assets/audio/beep-07a.mp3');
 audio2 = new Audio('assets/audio/beep-09.mp3');
 deltaX=0;
 funzioneInCorso=false;
 
-//manca forse il tempo totale della sessione e a quanto sono arrivato (da mettere magari con la barra)
+//manca forse il tempo della sessione e a quanto sono arrivato (da mettere magari con la barra)
+//manca anche il tempo totale e a che punto sono sul totale
