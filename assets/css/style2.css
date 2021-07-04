@@ -106,3 +106,9 @@ div{
     border: 1px solid lightgray;
     font-size: 27px;
 }
+
+@media only screen and (max-width: 500px) {
+    body{
+        width: 100%;
+    }
+}

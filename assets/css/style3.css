@@ -99,3 +99,9 @@ footer button{
     background-color: purple;
     width: 0%;
 }
+
+@media only screen and (max-width: 500px) {
+    body{
+        width: 100%;
+    }
+}
