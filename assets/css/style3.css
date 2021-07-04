@@ -82,8 +82,12 @@ footer button{
     border-radius: 5px;
 }
 
-.progressBar {
+.container {
     float: left;
+    width: 100%;
+}
+
+.progressBar {
     width: 100%;
     height: 10px;
     border: 1px solid purple;
