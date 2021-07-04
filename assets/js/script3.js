@@ -4,7 +4,7 @@ creaSessione = function (pezzo) {
     dove = document.getElementsByTagName("main")[0];
     parte=document.createElement('form');
     parte.className='parte';
-    if (pezzi[1]==="m/s" || pezzi[1]==="m/s") {
+    if (pezzi[1]==="m/s" || pezzi[1]==="km/h") {
         p1="Velocità: ";
     } else if (pezzi[1]==="s" || pezzi[1]==="m") {
         p1="Tempo al giro: ";
@@ -27,6 +27,11 @@ creaSessione = function (pezzo) {
         <p class="input">${pezzi[2]}</p>
         <p class="select">${pezzi[3]}</p>
     </section>
+    <div class="container">
+        <div class="progressBar">
+        <div class="progressBarFull"></div>     
+        </div>
+    </div>
     `
     dove.appendChild(parte);
 }
@@ -43,6 +48,11 @@ creaRecupero = function (pezzo) {
         <p class="input">${pezzi[0]}</p>
         <p class="select">${pezzi[1]}</p>
     </section>
+    <div class="container">
+        <div class="progressBar">
+        <div class="progressBarFull"></div>     
+        </div>
+    </div>
     `
     dove.appendChild(parte);
 }
@@ -95,26 +105,28 @@ creaTracciaR = function (pezzo){
 
 emettiBeep = function (delta){
     index++;
+    audio2.play();
     try {
-        let pezzo,intervalloBeep,numeroBeep;
-        beepIndex=0;
+        let pezzo,intervalloBeep,numeroBeep,percentuale,deltaPercentuale;
         pezzo=traccia[index];
-        //console.log(pezzo+" "+delta)
         if (pezzo.length===2){
+            beepIndex=0;
             sessione=true;
             intervalloBeep=pezzo[0];
             numeroBeep=pezzo[1];
-            audio.play();
-            //console.log("bip")
+            deltaPercentuale=100/numeroBeep;
+            percentuale=delta*deltaPercentuale;
+            document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
             let intervalloTempo=setInterval(function(){
                 if (pausa){
                     clearInterval(intervalloTempo); //non posso mettere solo il return perchè altrimenti poi riparte
                     return; //serve per non emettere il beep di troppo dopo il click
                 }
                 audio.play();
-                //console.log("bip")
                 beepIndex++;
                 numeroBeep--;
+                percentuale+=deltaPercentuale;
+                document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
                 if(numeroBeep<=delta){
                   clearInterval(intervalloTempo);
                   emettiBeep(0);
@@ -124,12 +136,17 @@ emettiBeep = function (delta){
             sessione=false;
             recupero=pezzo[0];
             secondi=0;
+            deltaPercentuale=100/recupero;
+            percentuale=delta*deltaPercentuale;
+            document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
             let intervalloTempo=setInterval(function(){
                 if (pausa){//idem leggi sopra
                     clearInterval(intervalloTempo);
                     return;
                 }
                 secondi++;
+                percentuale+=deltaPercentuale;
+                document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
                 if(secondi+delta>=recupero){
                   clearInterval(intervalloTempo);
                   emettiBeep(0);
@@ -163,44 +180,82 @@ pause = function (){
     index--;
 }
 
-previous = function (){
+restart = function (){
+    let aspetta;
     illumina(document.getElementsByTagName("button")[2]);
     if (pausa===true){index++}
+    pausaCopia=pausa;
     pausa=true;
-    if (sessione){
-        setTimeout(function(){
-            if(beepIndex<=2){index--;}
-            index--;
-            if (index===-2){
-                index=-1;
-            }
-            play();
-        },traccia[index][0]*1000);  // aspettare questo tempo è necessario se no succedono casini: 
-                                    // non ricomincerebbe il ciclo o non si accorgerebbe che la sessione precedente è terminata 
-                                    // e quindi ne partirebbero 2 in contemporanea
-    } else {
-        setTimeout(function(){
-            if(secondi<=4){index--;}
-            index--;
-            play();
-        },1000); //idem sopra
-    }
+    if (sessione){aspetta=traccia[index][0]*1000}
+    else {aspetta=1000};
+    // aspettare questo tempo è necessario se no succedono casini: 
+    // non ricomincerebbe il ciclo o non si accorgerebbe che la sessione precedente è terminata 
+    // e quindi ne partirebbero 2 in contemporanea
+    setTimeout(function(){
+        index--;
+        if (!pausaCopia){play()}
+        else {
+            deltaX=0;
+            document.getElementsByClassName('progressBarFull')[index+1].style.width="0%"
+        }
+    },aspetta);  
 }
 
 next = function (){
+    let aspetta;
     illumina(document.getElementsByTagName("button")[3]);
     if (pausa===true){index++}
+    pausaCopia=pausa;
     pausa=true;
-    if (sessione){
-        setTimeout(function(){
-            play();
-        },traccia[index][0]*1000); //idem sopra
-    } else {
-        setTimeout(function(){
-            play();
-        },1000); //idem sopra
-    } 
+    if (sessione){aspetta=traccia[index][0]*1000}
+    else {aspetta=1000};
+    //idem sopra
+    setTimeout(function(){
+        if (!pausaCopia){
+            document.getElementsByClassName('progressBarFull')[index].style.width="100%"
+            play()
+        }
+        else {
+            deltaX=0;
+            document.getElementsByClassName('progressBarFull')[index].style.width="100%"
+        }
+    },aspetta);
 }
+
+
+previous = function (){
+    let aspetta;
+    illumina(document.getElementsByTagName("button")[4]);
+    if (pausa===true){index++}
+    pausaCopia=pausa;
+    pausa=true;
+    if (sessione){aspetta=traccia[index][0]*1000}
+    else {aspetta=1000};
+    //idem sopra
+    setTimeout(function(){
+        index-=2;
+        if (index===-2){index=-1}
+        if (!pausaCopia){
+            document.getElementsByClassName('progressBarFull')[index+2].style.width="0%";
+            console.log("ciao");
+            play()
+        }
+        else {
+            deltaX=0;
+            document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";
+            document.getElementsByClassName('progressBarFull')[index+2].style.width="0%";
+        }
+    },aspetta);
+}
+
+reset = function (){
+    illumina(document.getElementsByTagName("button")[5]);
+    pausa=true;
+    index=-1;
+}
+
+
+
 
 illumina = function (tag){
     tag.style.backgroundColor = "lightgreen";
@@ -247,8 +302,7 @@ let traccia,index,audio,pausa,beepIndex,deltaX,secondi,sessione;
 index=-1;
 pausa=false;
 audio = new Audio('assets/audio/beep-07a.mp3');
+audio2 = new Audio('assets/audio/beep-09.mp3');
 deltaX=0;
 
-//manca ancora che si illumina la sessione in corso
-//manca pure il tempo rimanente alla fine della sessione e il tempo rimanente totale
-//posso pure mettere l'ultimo beep diverso
+//manca forse il tempo totale della sessione e a quanto sono arrivato (da mettere magari con la barra)
