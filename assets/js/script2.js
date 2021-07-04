@@ -322,7 +322,7 @@ comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e dura
     } else {
         lunghezza=(parseFloat(lunghezza).toFixed(0))+" m";
     }
-    conferma= window.confirm('La durata totale della prova è: '+durata+'.\nLa lunghezza totale della prova è: '+lunghezza+'.\nSe vuoi passare alla pagina successiva premi su OK.')
+    conferma= window.confirm('La durata totale della prova è poco più di '+durata+'.\nLa lunghezza totale della prova è poco più di '+lunghezza+'.\nSe vuoi passare alla pagina successiva premi su OK.')
         if (conferma){
             window.location.href = 'index3.html?stringa=' + stringa;
         }

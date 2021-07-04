@@ -89,7 +89,8 @@ creaTracciaS = function (pezzo, lunghezzaPista,numeroBirilli){//numero di beep e
         tempo=distanza/velocità;
     }
     intervalloBeep=(lunghezzaPista/numeroBirilli)/velocità;
-    numeroBeep=parseInt(tempo/intervalloBeep);
+    console.log(tempo/intervalloBeep)
+    numeroBeep=Math.ceil(tempo/intervalloBeep); //non so se sarebbe meglio Math.round()
     return [intervalloBeep,numeroBeep];
    
 }
