@@ -171,7 +171,7 @@ play = function (){
 }
 
 pause = function (){
-    if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[1]);}
+    if (funzioneInCorso||pausa){illuminaR(document.getElementsByTagName("button")[1]);}
     else {
         let aspetta;
         funzioneInCorso=true;
@@ -182,6 +182,7 @@ pause = function (){
         } else {
             deltaX=secondi;
         }
+        console.log(index)
         if (sessione){aspetta=traccia[index][0]*1000}
         else {aspetta=1000};
         setTimeout(function(){funzioneInCorso=false;},aspetta);  
