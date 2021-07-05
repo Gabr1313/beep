@@ -1,5 +1,5 @@
 creaSessione = function (pezzo) {
-    let pezzi, parte, dove, p1, p2;
+    let pezzi, parte, dove, p1, p2, p;
     pezzi=pezzo.split("-");
     dove = document.getElementsByTagName("main")[0];
     parte=document.createElement('form');
@@ -35,10 +35,18 @@ creaSessione = function (pezzo) {
     </div>
     `
     dove.appendChild(parte);
+
+    p=document.createElement("p");
+    if (traccia[traccia.length-1][2]>60){
+        p.innerHTML="0.00 / "+(traccia[traccia.length-1][2]/60).toFixed(2) + " min";
+    } else{
+        p.innerHTML="0.00 / "+traccia[traccia.length-1][2].toFixed(2) + " sec";
+    }
+    document.getElementsByClassName('progressBar')[traccia.length-1].appendChild(p);
 }
 
 creaRecupero = function (pezzo) {
-    let pezzi, parte, dove;
+    let pezzi, parte, dove, p;
     pezzi=pezzo.split("-");
     dove = document.getElementsByTagName("main")[0];
     parte=document.createElement('form');
@@ -56,6 +64,14 @@ creaRecupero = function (pezzo) {
     </div>
     `
     dove.appendChild(parte);
+
+    p=document.createElement("p");
+    if (traccia[traccia.length-1][0]>60){
+        p.innerHTML="0.00 / "+(traccia[traccia.length-1][0]/60).toFixed(2) + " min";
+    } else{
+        p.innerHTML="0.00 / "+traccia[traccia.length-1][0].toFixed(2) + " sec";
+    }
+    document.getElementsByClassName('progressBar')[traccia.length-1].appendChild(p);
 }
 
 creaTracciaS = function (pezzo, lunghezzaPista,numeroBirilli){//numero di beep e intervallo tra i vari beep
@@ -88,9 +104,12 @@ creaTracciaS = function (pezzo, lunghezzaPista,numeroBirilli){//numero di beep e
         }
         tempo=distanza/velocità;
     }
+    distanza=velocità*tempo;
     intervalloBeep=(lunghezzaPista/numeroBirilli)/velocità;
     numeroBeep=Math.ceil(tempo/intervalloBeep); //non so se sarebbe meglio Math.round()
-    return [intervalloBeep,numeroBeep];
+    lunghezzaTotale+=distanza;
+    tempoTotale+=intervalloBeep*numeroBeep;
+    return [intervalloBeep,numeroBeep,intervalloBeep*numeroBeep];
    
 }
 
@@ -98,8 +117,10 @@ creaTracciaR = function (pezzo){
     let pezzi;
     pezzi=pezzo.split("-");  
     if (pezzi[1]==="sec"){
+        tempoTotale+=parseFloat(pezzi[0]);
         return [parseFloat(pezzi[0])];
     } else if (pezzi[1]==="min"){
+        tempoTotale+=parseFloat(pezzi[0])*60;
         return [parseFloat(pezzi[0])*60];
     }
 }
@@ -107,17 +128,18 @@ creaTracciaR = function (pezzo){
 emettiBeep = function (delta){
     audio2.play();
     try {
-        let pezzo,intervalloBeep,numeroBeep,percentuale,deltaPercentuale;
+        let pezzo,intervalloBeep,numeroBeep,percentuale,deltaPercentuale,tempo;
         pezzo=traccia[index];
-        if (pezzo.length===2){
-            beepIndex=0;
+        tempo=0;
+        if (pezzo.length!==1){
+            beepIndex=delta;
             intervalloBeep=pezzo[0];
             numeroBeep=pezzo[1];
             deltaPercentuale=100/numeroBeep;
             percentuale=delta*deltaPercentuale;
-            document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
             let intervalloTempo=setInterval(function(){
                 if (pausa){
+                    audio2.play();
                     clearInterval(intervalloTempo); //non posso mettere solo il return perchè altrimenti poi riparte
                     funzioneInCorso=false;
                     if (!pausaCopia){ //serve per far ripartire il beep nel minor tempo possibile quando non si è in pausa
@@ -127,6 +149,17 @@ emettiBeep = function (delta){
                     }
                     return; //serve per non emettere il beep di troppo dopo il click
                 }
+
+                tempo+=intervalloBeep;
+                str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
+                str=" /"+str.split('/')[1];
+                if(str.split(' ')[str.split(' ').length-1]==="sec"){
+                    str=tempo.toFixed(2)+str;
+                } else {
+                    str=(tempo/60).toFixed(2)+str;
+                }              
+                document.getElementsByClassName('progressBar')[index].children[1].innerHTML=str;
+
                 audio.play();
                 beepIndex++;
                 numeroBeep--;
@@ -140,12 +173,13 @@ emettiBeep = function (delta){
             },intervalloBeep*1000);
         } else /*if (pezzo.length===1)*/{
             recupero=pezzo[0];
-            secondi=0;
+            secondi=delta;
             deltaPercentuale=100/recupero;
             percentuale=delta*deltaPercentuale;
-            document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
+            document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%";
             let intervalloTempo=setInterval(function(){
                 if (pausa){
+                    audio2.play();
                     clearInterval(intervalloTempo); //non posso mettere solo il return perchè altrimenti poi riparte
                     funzioneInCorso=false;
                     if (!pausaCopia){
@@ -156,6 +190,15 @@ emettiBeep = function (delta){
                     return; //serve per non emettere il beep di troppo dopo il click
                 }
                 secondi++;
+                str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
+                str=" /"+str.split('/')[1];
+                if(str.split(' ')[str.split(' ').length-1]==="sec"){
+                    str=secondi.toFixed(2)+str;
+                } else {
+                    str=(secondi/60).toFixed(2)+str;
+                }
+                document.getElementsByClassName('progressBar')[index].children[1].innerHTML=str;
+
                 percentuale+=deltaPercentuale;
                 document.getElementsByClassName('progressBarFull')[index].style.width=percentuale+"%"
                 if(secondi+delta>=recupero){
@@ -185,11 +228,10 @@ play = function (){
 pause = function (){
     if (funzioneInCorso||pausa){illuminaR(document.getElementsByTagName("button")[1]);}
     else {
-        audio2.play();
         funzioneInCorso=true;
         pausa=true;
         illuminaV(document.getElementsByTagName("button")[1]);
-        if (traccia[index].length===2){
+        if (traccia[index].length!==1){
             deltaX=beepIndex;
         } else {
             deltaX=secondi;
@@ -205,12 +247,12 @@ restart = function (){
         pausa=true;
         illuminaV(document.getElementsByTagName("button")[2]);
         if (index===traccia.length){index--}
-        if (!pausaCopia){
-            deltaX=0;
-        }
-        else {
-            deltaX=0;
-            document.getElementsByClassName('progressBarFull')[index].style.width="0%";
+        str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
+        str="0.00 /"+str.split('/')[1];
+        document.getElementsByClassName('progressBar')[index].children[1].innerHTML=str;
+        document.getElementsByClassName('progressBarFull')[index].style.width="0%";
+        deltaX=0;
+        if (pausaCopia){
             funzioneInCorso=false;
         } 
     }
@@ -224,17 +266,21 @@ next = function (){
         pausa=true;
         illuminaV(document.getElementsByTagName("button")[3]);
         document.getElementsByClassName('progressBarFull')[index].style.width="100%";
-        index++;
-        if (!pausaCopia){
-            deltaX=0;
+        str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
+
+        if(str.split(' ')[str.split(' ').length-1]==="sec"){
+            str=traccia[index][traccia[index].length-1].toFixed(2)+" /"+str.split('/')[1];
+        } else {
+            str=(traccia[index][traccia[index].length-1]/60).toFixed(2)+" /"+str.split('/')[1];
         }
-        else {
-            deltaX=0;
+        document.getElementsByClassName('progressBar')[index].children[1].innerHTML=str;
+        index++;
+        deltaX=0;
+        if (pausaCopia){
             funzioneInCorso=false;
         } 
     }
 }
-
 
 previous = function (){
     if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[4]);}
@@ -246,12 +292,17 @@ previous = function (){
         if (index===0){index++}
         index--;
         document.getElementsByClassName('progressBarFull')[index].style.width="0%";
-        if (index!==traccia.length-1){document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";}
-        if (!pausaCopia){
-            deltaX=0;
+        str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
+        str="0.00 /"+str.split('/')[1];
+        document.getElementsByClassName('progressBar')[index].children[1].innerHTML=str;
+        if (index!==traccia.length-1){
+            document.getElementsByClassName('progressBarFull')[index+1].style.width="0%";
+            str=document.getElementsByClassName('progressBar')[index+1].children[1].innerHTML;
+            str="0.00 /"+str.split('/')[1];
+            document.getElementsByClassName('progressBar')[index+1].children[1].innerHTML=str;
         }
-        else {
-            deltaX=0;
+        deltaX=0;
+        if (pausaCopia){
             funzioneInCorso=false;
         } 
     }
@@ -282,7 +333,7 @@ if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che i
     article=document.getElementsByTagName("article")[0];
     input=stringa.split(";")[0].split('-');
     article.children[0].innerHTML="I birilli sono "+input[0]+".";
-    article.children[1].innerHTML="La pista è lunga "+input[1]+input[2]+".";
+    article.children[1].innerHTML="La pista è lunga "+input[1]+" "+input[2]+".";
 } else {
     window.alert("Torna alla iniziale, c'è quale problema alla URL!");
     window.location.href = 'index2.html';
@@ -300,17 +351,29 @@ window.onload=function(){ //leggo la URL e creo le sessioni grafiche
 
     for (element of stringa.split(";")){
         if (element.split("-").length===4) {
-            creaSessione(element);
             traccia.push(creaTracciaS(element,lunghezzaPista,numeroBirilli));
+            creaSessione(element);
         } else if (element.split("-").length===2){
-            creaRecupero(element);
             traccia.push(creaTracciaR(element));
+            creaRecupero(element);
         }
     }
-    emettiBeep(0);  
+    
+    if (tempoTotale-60>0){
+        document.getElementsByTagName("article")[0].children[2].innerHTML="La durata totale è "+(tempoTotale/60).toFixed(2) + " min.";
+    } else {
+        document.getElementsByTagName("article")[0].children[2].innerHTML="La durata totale è "+tempoTotale.toFixed(0) + " sec.";
+    }
+    if (lunghezzaTotale-1000>0){
+        document.getElementsByTagName("article")[0].children[3].innerHTML="La distanza totale è "+(lunghezzaTotale/1000).toFixed(2) + " km.";
+    } else {
+        document.getElementsByTagName("article")[0].children[3].innerHTML="La distanza totale è "+lunghezzaTotale.toFixed(0) + " m.";
+    }
+
+    emettiBeep(0);
 }
 
-let traccia,index,audio,pausa,beepIndex,deltaX,secondi,funzioneInCorso,pausaCopia;
+let traccia,index,audio,pausa,beepIndex,deltaX,secondi,funzioneInCorso,pausaCopia,lunghezzaTotale,tempoTotale;
 index=0;
 pausa=false;
 audio = new Audio('assets/audio/beep-07a.mp3');
@@ -318,6 +381,5 @@ audio2 = new Audio('assets/audio/beep-09.mp3');
 deltaX=0;
 funzioneInCorso=false;
 pausaCopia=true;
-
-//manca forse il tempo della sessione e a quanto sono arrivato (da mettere magari con la barra)
-//manca anche il tempo totale e a che punto sono sul totale
+lunghezzaTotale=0;
+tempoTotale=0;
