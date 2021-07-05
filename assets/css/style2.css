@@ -23,6 +23,10 @@ h1{
     clear: both;
 }
 
+article p{
+    font-style: italic;
+}
+
 form input, footer button{
     float: left;
     width: 71%;

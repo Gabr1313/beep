@@ -23,6 +23,10 @@ h1{
     clear: both;
 }
 
+article p{
+    font-style: italic;
+}
+
 form p{
     width: 100%;
 }
@@ -92,6 +96,7 @@ footer button{
     height: 22px;
     border: 1px solid lightskyblue;
     background-color: #fff;
+    border-radius: 5px;
 }
 
 .progressBarFull {
@@ -102,7 +107,6 @@ footer button{
 
 .progressBar p{
     float: left;
-    font-weight: 600;
     margin: -20px 0 0 3px;
 }
 
