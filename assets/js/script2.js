@@ -163,7 +163,8 @@ cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di imm
         input.setAttribute("type", "number");
         input.step="any";
         select.id = 'numeroGiriUM';
-        select.innerHTML= ``
+        select.innerHTML= `
+        `
     }
     if (tipo===5){
         let section = form.children[1+j];
@@ -257,7 +258,7 @@ comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e dura
     //poi smisto la tipologia in base alla lunghezza e all'unità di misura
     }
     if (stringa.split(';').length<=1){
-        window.alert("Inserisci almeno una sessione.");
+        window.alert('Inserisci almeno una sessione. Prova cliccando sul "+"');
         return;
     }
     durata=0;
