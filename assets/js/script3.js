@@ -10,9 +10,9 @@ creaSessione = function (pezzo) {
         p1="Tempo al giro: ";
     };
     if (pezzi[3]==="sec" || pezzi[3]==="min") {
-        p2="Tempo fase: ";
+        p2="Tempo sessione: ";
     } else if (pezzi[3]==="m" || pezzi[3]==="km") {
-        p2="Distanza fase: ";
+        p2="Distanza sessione: ";
     } else if (pezzi[3]==="") {
         p2="Numero giri: ";
     };
@@ -330,7 +330,7 @@ illuminaR = function (tag){
 if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che il link contenga i dati che servono
     //Penso bisognerebbe controllarlo meglio in futuro tuttavia
     let input,article;
-    article=document.getElementsByTagName("article")[0];
+    article=document.getElementsByTagName("ul")[0];
     input=stringa.split(";")[0].split('-');
     article.children[0].innerHTML="I birilli sono "+input[0]+".";
     article.children[1].innerHTML="La pista è lunga "+input[1]+" "+input[2]+".";
@@ -360,14 +360,14 @@ window.onload=function(){ //leggo la URL e creo le sessioni grafiche
     }
     
     if (tempoTotale-60>0){
-        document.getElementsByTagName("article")[0].children[2].innerHTML="La durata totale è "+(tempoTotale/60).toFixed(2) + " min.";
+        document.getElementsByTagName("ul")[0].children[2].innerHTML="La durata totale è "+(tempoTotale/60).toFixed(2) + " min.";
     } else {
-        document.getElementsByTagName("article")[0].children[2].innerHTML="La durata totale è "+tempoTotale.toFixed(0) + " sec.";
+        document.getElementsByTagName("ul")[0].children[2].innerHTML="La durata totale è "+tempoTotale.toFixed(0) + " sec.";
     }
     if (lunghezzaTotale-1000>0){
-        document.getElementsByTagName("article")[0].children[3].innerHTML="La distanza totale è "+(lunghezzaTotale/1000).toFixed(2) + " km.";
+        document.getElementsByTagName("ul")[0].children[3].innerHTML="La distanza totale è "+(lunghezzaTotale/1000).toFixed(2) + " km.";
     } else {
-        document.getElementsByTagName("article")[0].children[3].innerHTML="La distanza totale è "+lunghezzaTotale.toFixed(0) + " m.";
+        document.getElementsByTagName("ul")[0].children[3].innerHTML="La distanza totale è "+lunghezzaTotale.toFixed(0) + " m.";
     }
 
     emettiBeep(0);

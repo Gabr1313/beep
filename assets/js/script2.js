@@ -13,7 +13,7 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
         window.alert("Inserisci dei valori validi per la sessione.");
         return;
     }
-    dove = document.getElementsByTagName("main")[0].children[3];
+    dove = document.getElementsByTagName("main")[0].children[4];
     parte=document.createElement('form');
     parte.className='parte';
     parte.id="parte"+i;
@@ -63,7 +63,7 @@ rimuoviSessione = function (posizione){ //rimuove la sessione
 };
 
 aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il recupero modificabile
-    let form, var1, var2;
+    let form, var1, var2, dove, parte;
     form=document.getElementById("parte-2");
     var1=form.children[0].children[1].value;
     var2=form.children[0].children[2].value;  
@@ -71,8 +71,8 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
         window.alert("Inserisci dei valori validi per il recupero.");
         return;
     }
-    let dove = document.getElementsByTagName("main")[0].children[3];
-    let parte=document.createElement('form');
+    dove = document.getElementsByTagName("main")[0].children[4];
+    parte=document.createElement('form');
     parte.className='parte';
     parte.id="parte"+i;
     parte.innerHTML=`
