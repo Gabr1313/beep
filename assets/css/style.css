@@ -17,6 +17,7 @@ header p{
     float: right;
     font-size: 13px;
     font-style: italic;
+    margin-bottom: 15px;
 }
 
 h1{
@@ -30,6 +31,7 @@ h1{
 }
 
 form input, button, form select{
+    background-color: white;
     float: left;
     margin: 10px 1% 10px 0;
     padding: 0 15px;
@@ -77,6 +79,7 @@ ul{
 }
 
 /* page2 */
+
 .page2 form{
     background-color: #41131688;
 }
@@ -107,12 +110,13 @@ ul{
 
 .page2 section p{
     float: left;
+    max-width: 85%;
 }
 
 .cambia{
     float: left;
     text-align: center;
-    width: 31px;
+    width: 12.2%;
     height: 31px;
     background-color: white;
     border-radius: 100px;
@@ -123,7 +127,7 @@ ul{
 
 .aggiungi{
     float: right;
-    width: 45px;
+    width: 8%;
     height: 45px;
     margin: 37px 0 0 0;
     background-color: white;
@@ -170,7 +174,6 @@ ul{
 .page2 .parte .aggiungi{
     margin-top: 32px;
 }
-
 
 /* page3 */
 
@@ -294,9 +297,14 @@ form select option {
 }
 
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
     body{
         width: 100%;
         padding: 0 1%;
     }
+    .page3 footer{
+        width: 100%;
+        margin: 0;
+    }
 }
+

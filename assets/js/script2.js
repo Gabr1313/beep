@@ -160,9 +160,9 @@ cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di imm
         let button = section.children[1];
         let input = section.children[2];
         let select = section.children[3];
-        p.innerHTML = 'Distanza fase: ';
+        p.innerHTML = 'Distanza sessione: ';
         button.onclick = () => cambiaS(4,posizione) ;
-        input.placeholder = 'Distanza Fase';
+        input.placeholder = 'Distanza sessione';
         input.setAttribute("type", "number");
         input.step="any";
         select.innerHTML= `
@@ -191,9 +191,9 @@ cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di imm
         let button = section.children[1];
         let input = section.children[2];
         let select = section.children[3];
-        p.innerHTML = 'Tempo fase: ';
+        p.innerHTML = 'Tempo sessione: ';
         button.onclick = () => cambiaS(3,posizione) ;
-        input.placeholder = 'Tempo fase';
+        input.placeholder = 'Tempo sessione';
         input.setAttribute("type", "number");
         input.step="any";
         select.innerHTML= `
