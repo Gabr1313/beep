@@ -216,9 +216,10 @@ emettiBeep = function (delta){
 }
 
 play = function (){
-    if (funzioneInCorso||!pausa){illuminaR(document.getElementsByTagName("button")[0]);}
+    if (funzioneInCorso||!pausa){illumina(document.getElementsByTagName("button")[0],"rosso");}
     else {
-        illuminaV(document.getElementsByTagName("button")[0]);
+        document.getElementsByTagName("button")[4]
+        illumina(document.getElementsByTagName("button")[0],"verde");
         pausa=false;
         emettiBeep(deltaX);
         deltaX=0;
@@ -226,11 +227,11 @@ play = function (){
 }
 
 pause = function (){
-    if (funzioneInCorso||pausa){illuminaR(document.getElementsByTagName("button")[1]);}
+    if (funzioneInCorso||pausa){illumina(document.getElementsByTagName("button")[1],"rosso");}
     else {
         funzioneInCorso=true;
         pausa=true;
-        illuminaV(document.getElementsByTagName("button")[1]);
+        illumina(document.getElementsByTagName("button")[1],"verde");
         if (traccia[index].length!==1){
             deltaX=beepIndex;
         } else {
@@ -240,12 +241,12 @@ pause = function (){
 }
 
 restart = function (){
-    if (funzioneInCorso || index===traccia.length){illuminaR(document.getElementsByTagName("button")[2]);}
+    if (funzioneInCorso || index===traccia.length){illumina(document.getElementsByTagName("button")[2],"rosso");}
     else {
         funzioneInCorso=true;
         pausaCopia=pausa;
         pausa=true;
-        illuminaV(document.getElementsByTagName("button")[2]);
+        illumina(document.getElementsByTagName("button")[2],"verde");
         if (index===traccia.length){index--}
         str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
         str="0.00 /"+str.split('/')[1];
@@ -259,12 +260,12 @@ restart = function (){
 }
 
 next = function (){
-    if (funzioneInCorso || index===traccia.length){illuminaR(document.getElementsByTagName("button")[3]);}
+    if (funzioneInCorso || index===traccia.length){illumina(document.getElementsByTagName("button")[3],"rosso");}
     else {
         funzioneInCorso=true;
         pausaCopia=pausa;
         pausa=true;
-        illuminaV(document.getElementsByTagName("button")[3]);
+        illumina(document.getElementsByTagName("button")[3],"verde");
         document.getElementsByClassName('progressBarFull')[index].style.width="100%";
         str=document.getElementsByClassName('progressBar')[index].children[1].innerHTML;
 
@@ -283,12 +284,12 @@ next = function (){
 }
 
 previous = function (){
-    if (funzioneInCorso){illuminaR(document.getElementsByTagName("button")[4]);}
+    if (funzioneInCorso){illumina(document.getElementsByTagName("button")[4],"rosso");}
     else {
         funzioneInCorso=true;
         pausaCopia=pausa;
         pausa=true;
-        illuminaV(document.getElementsByTagName("button")[4]);
+        illumina(document.getElementsByTagName("button")[4],"verde");
         if (index===0){index++}
         index--;
         document.getElementsByClassName('progressBarFull')[index].style.width="0%";
@@ -309,22 +310,8 @@ previous = function (){
 }
 
 reset = function (){
-    illuminaV(document.getElementsByTagName("button")[5]);
+    illumina(document.getElementsByTagName("button")[5],"verde");
     location.reload(); 
-}
-
-illuminaV = function (tag){
-    tag.style.backgroundColor = "lightgreen";
-    setTimeout(function(){
-        tag.style.backgroundColor = "white";
-    },200);
-}
-
-illuminaR = function (tag){
-    tag.style.backgroundColor = "lightsalmon";
-    setTimeout(function(){
-        tag.style.backgroundColor = "white";
-    },200);
 }
 
 if(stringa = window.location.href.split('?')[1].split('=')[1]){//controlla che il link contenga i dati che servono

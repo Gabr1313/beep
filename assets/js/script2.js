@@ -1,5 +1,5 @@
 aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la sessione modificabile
-    let var1, var2, var3, var4, p1, p2, form, t1, t2,dove,parte;
+    let var1, var2, var3, var4, p1, p2, form, t1, t2,dove,parte, button;
     form=document.getElementById("parte-1");
     var1=form.children[0].children[2].value;
     var2=form.children[0].children[3].value;
@@ -9,10 +9,13 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
     if (var4==="sec" || var4==="min"){t2=3}else if (var4==="m" || var4==="km"){t2=4}else{t2=5};
     p1=form.children[0].children[0].innerHTML;
     p2=form.children[1].children[0].innerHTML;
+    button=document.getElementsByTagName("button")[2];
     if (!var1 || !var3 || var1 < 0 || var3 < 0){
+        illumina(button,"rosso");
         window.alert("Inserisci dei valori validi per la sessione.");
         return;
     }
+    illumina(button,"verde");
     dove = document.getElementsByTagName("main")[0].children[4];
     parte=document.createElement('form');
     parte.className='parte';
@@ -51,10 +54,14 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
 }
 
 rimuoviSessione = function (posizione){ //rimuove la sessione 
-    let sessione,j;
+    let sessione,j,button,div;
     sessione = document.getElementById("parte"+posizione);
     div=sessione.parentNode;
-    div.removeChild(sessione);
+    button=sessione.getElementsByTagName("button")[4]
+    illumina(button,"verde");
+        setTimeout(function(){
+            div.removeChild(sessione);
+        },200)  
     i--;
     //se rimuovo una parte, devo cambiare gli indici di quelli che vengono dopo
     for (j=0;j<div.childElementCount;j++){
@@ -66,11 +73,14 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
     let form, var1, var2, dove, parte;
     form=document.getElementById("parte-2");
     var1=form.children[0].children[1].value;
-    var2=form.children[0].children[2].value;  
+    var2=form.children[0].children[2].value;
+    button=document.getElementsByTagName("button")[3];
     if (!var1 || var1 < 0){
+        illumina(button,"rosso");
         window.alert("Inserisci dei valori validi per il recupero.");
         return;
     }
+    illumina(button,"verde");
     dove = document.getElementsByTagName("main")[0].children[4];
     parte=document.createElement('form');
     parte.className='parte';
@@ -100,8 +110,17 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
 }
 
 cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di immissione dati  
+    let button,delta;
     let form=document.getElementById("parte"+posizione);
     let j=0;
+
+    delta=0;
+    if (posizione>=0){delta=2} //quando ci sono le freccine
+    if (tipo===1 || tipo===2){button= form.getElementsByTagName("button")[0+delta]}
+    else {button= form.getElementsByTagName("button")[1+delta]}
+    console.log(button)
+    illumina(button,"verde");
+
     if (form.children[0].tagName!="SECTION"){j=1} //quando ci sono le freccine
     if (tipo===1){
         let section = form.children[0+j];
@@ -242,7 +261,8 @@ sopra = function(posizione1, delta){//sposta sopra o sotto le sessioni/i recuper
 }
 
 comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e durata, chiedo conferma e passo alla pagina successiva
-    let stringa,contenitore,j,form, conferma, durata, lunghezza, tempo, lunghezzaPista,distanza,velocità,tempoAlGiro;
+    let stringa,contenitore,j,form, conferma, durata, lunghezza, tempo, lunghezzaPista,distanza,velocità,tempoAlGiro, button;
+    button=document.getElementsByTagName("button")[document.getElementsByTagName("button").length-1]
     stringa = window.location.href.split('?')[1].split('=')[1]
     contenitore=document.getElementsByTagName("div")[0];
     for (j=0;j<contenitore.childElementCount;j++){
@@ -258,9 +278,11 @@ comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e dura
     //poi smisto la tipologia in base alla lunghezza e all'unità di misura
     }
     if (stringa.split(';').length<=1){
+        illumina(button,"rosso");
         window.alert('Inserisci almeno una sessione. Prova cliccando sul "+"');
         return;
     }
+    illumina(button,"verde");
     durata=0;
     lunghezza=0;
     if (stringa.split(";")[0].split("-")[2]==="m"){

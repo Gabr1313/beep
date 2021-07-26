@@ -8,11 +8,18 @@ comandiNext = function (){
     let numeroBirilli=document.getElementById("numeroBirilli").value;
     let lunghezzaGiro=document.getElementById("lunghezzaGiro").value;
     let lunghezzaGiroUM=document.getElementById("lunghezzaGiroUM").value;
+    let button=document.getElementsByTagName("button")[0];
     if (!lunghezzaGiro || !numeroBirilli || lunghezzaGiro < 0 || numeroBirilli < 0){
-        window.alert("Inserisci i dati validi.");
+        illumina(button,"rosso");
+        setTimeout(function(){
+            window.alert("Inserisci i dati validi.");
+        },200)      
     } else {
         //carica pagina2 passando i parametri
-        window.location.href = 'index2.html?stringa='+numeroBirilli+'-'+lunghezzaGiro+'-'+lunghezzaGiroUM;
+        illumina(button,"verde");
+        setTimeout(function(){
+            window.location.href = 'index2.html?stringa='+numeroBirilli+'-'+lunghezzaGiro+'-'+lunghezzaGiroUM;
+        },200)
     }
 }
 
