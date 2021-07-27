@@ -110,13 +110,12 @@ ul{
 
 .page2 section p{
     float: left;
-    max-width: 85%;
 }
 
 .cambia{
     float: left;
     text-align: center;
-    width: 12.2%;
+    width: 31px;
     height: 31px;
     background-color: white;
     border-radius: 100px;
@@ -125,13 +124,11 @@ ul{
     padding: 0px;
 }
 
-.aggiungi{
+.aggiungi1, .aggiungi2{
     float: right;
     width: 8%;
     height: 45px;
     margin: 37px 0 0 0;
-    background-color: white;
-    font-size: 18px;
     border-radius: 5px;
     padding: 0px;
 }
@@ -159,16 +156,12 @@ ul{
     margin-right: 10px;
 }
 
-.freccia{
+.freccia, .freccia1{
     float: left;
-    margin: 2px 0;
-    padding: 0 10px;
+    margin: 1% 0;
     background-color: white;
     font-size: 27px;
-}
-
-.page2 .parte p{
-    font-size: 17px;
+    padding: 3px 10px 10px 10px;
 }
 
 .page2 .parte .aggiungi{
@@ -195,7 +188,7 @@ ul{
     border: 2px solid #5f1d21;
     font-size: 18px;
     height: 45px;
-    width: 71%;
+    width: 70%;
 }
 
 .page3 .select{
@@ -302,9 +295,43 @@ form select option {
         width: 100%;
         padding: 0 1%;
     }
+
+
+    /*page2*/
+    .page2 form section{
+        width: 80%;
+    }
+
+    .page2 section p{
+        max-width: 70%;
+    }
+
+    .aggiungi1, .aggiungi2{
+        width: 16%;
+    }
+
+    .aggiungi1{
+        margin: -10px 0 0 0;
+    }
+
+    .page2 .parte section{
+        width: 70%;
+        margin: 0 0 0 2%;
+    }
+
+    .freccia1{
+        margin: 50px 0 2px 0;
+    }
+
+    /*page3*/
+
+    .page3 form section{
+        width: 99%;
+    }
+
     .page3 footer{
-        width: 100%;
-        margin: 0;
+        width: 96%;
+        margin: 0 0 0 1%;
     }
 }
 

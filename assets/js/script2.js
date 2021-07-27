@@ -22,7 +22,7 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
     parte.id="parte"+i;
     parte.innerHTML=`
     <aside>
-        <button class="freccia" onclick="sopra(${i},-1)">↑</button>
+        <button class="freccia1" onclick="sopra(${i},-1)">↑</button>
         <button class="freccia" onclick="sopra(${i},1)">↓</button>
     </aside>
     <section>
@@ -39,7 +39,7 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
         <select>
         </select>
     </section>
-    <button class="aggiungi" onclick="rimuoviSessione(${i})">-</button>
+    <button class="aggiungi1" onclick="rimuoviSessione(${i})">-</button>
     `
     select=parte.getElementsByTagName("select");
     select[0].innerHTML=form.children[0].children[3].innerHTML;
@@ -98,7 +98,7 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
             <option>sec</option>
         </select>
     </section>
-    <button class="aggiungi" onclick="rimuoviSessione(${i})">-</button>
+    <button class="aggiungi2" onclick="rimuoviSessione(${i})">-</button>
     `
     select=parte.getElementsByTagName("select");
     select[0].value=var2;
