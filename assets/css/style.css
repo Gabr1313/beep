@@ -226,7 +226,7 @@ ul{
     margin: 0 0 0 50px;
     bottom: 10px;
     text-align: center;
-    padding: 5px;
+    padding: 3px 8px;
     background: rgb(0, 102, 204);
     border-radius: 8px;
     border: 2px solid #5f1d21;
@@ -235,10 +235,14 @@ ul{
 .page3 footer button{
     margin: 5px 1.32%;
     width: 14%;
-    height: 30px;
+    height: 35px;
     border-radius: 100px;
     font-size: 18px;
     border: 2px solid #5f1d21;
+}
+
+.page3 img{
+    height: 80%;
 }
 
 .container {
