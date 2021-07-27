@@ -10,7 +10,7 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
     p1=form.children[0].children[0].innerHTML;
     p2=form.children[1].children[0].innerHTML;
     button=document.getElementsByTagName("button")[2];
-    if (!var1 || !var3 || var1 < 0 || var3 < 0){
+    if (!var1 || !var3 || var1 <= 0 || var3 <= 0){
         illumina(button,"rosso");
         window.alert("Inserisci dei valori validi per la sessione.");
         return;
@@ -77,7 +77,7 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
     var1=form.children[0].children[1].value;
     var2=form.children[0].children[2].value;
     button=document.getElementsByTagName("button")[3];
-    if (!var1 || var1 < 0){
+    if (!var1 || var1 <= 0){
         illumina(button,"rosso");
         window.alert("Inserisci dei valori validi per il recupero.");
         return;
