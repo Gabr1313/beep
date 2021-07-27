@@ -130,13 +130,13 @@ emettiBeep = function (delta){
     try {
         let pezzo,intervalloBeep,numeroBeep,percentuale,deltaPercentuale,tempo;
         pezzo=traccia[index];
-        tempo=0;
         if (pezzo.length!==1){
             beepIndex=delta;
             intervalloBeep=pezzo[0];
             numeroBeep=pezzo[1];
             deltaPercentuale=100/numeroBeep;
             percentuale=delta*deltaPercentuale;
+            tempo=beepIndex*intervalloBeep;
             let intervalloTempo=setInterval(function(){
                 if (pausa){
                     audio2.play();
