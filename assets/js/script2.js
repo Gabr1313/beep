@@ -46,6 +46,8 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
     select[0].value=var2;
     select[1].innerHTML=form.children[1].children[3].innerHTML;
     select[1].value=var4;
+    select[0].style.backgroundColor = "white";//nel css non me lo prende e poi sul telefono cambia colore
+    select[0].style.backgroundColor = "white";
 
     parte.onsubmit = (event) => { event.preventDefault() }
 
@@ -102,6 +104,7 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
     `
     select=parte.getElementsByTagName("select");
     select[0].value=var2;
+    select[0].style.backgroundColor = "white";//nel css non me lo prende e poi sul telefono cambia colore
 
     parte.onsubmit = (event) => { event.preventDefault() }
 
