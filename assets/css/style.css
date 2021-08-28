@@ -13,11 +13,10 @@ body{
     background-color: #77242ace;
 }
 
-header p{
+.info img{
     float: right;
-    font-size: 13px;
-    font-style: italic;
-    margin-bottom: 15px;
+    height: 20px;
+    margin: 5px 0 10px 0;
 }
 
 h1{
@@ -241,7 +240,7 @@ ul{
     border: 2px solid #5f1d21;
 }
 
-.page3 img{
+.page3 footer img{
     height: 80%;
 }
 

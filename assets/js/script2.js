@@ -267,7 +267,7 @@ comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e dura
     let stringa,contenitore,j,form, conferma, durata, lunghezza, tempo, lunghezzaPista,distanza,velocità,tempoAlGiro, button;
     button=document.getElementsByTagName("button")[document.getElementsByTagName("button").length-1]
     stringa = window.location.href.split('?')[1].split('=')[1]
-    contenitore=document.getElementsByTagName("div")[0];
+    contenitore=document.getElementsByTagName("div")[1];
     for (j=0;j<contenitore.childElementCount;j++){
         form=contenitore.children[j];
         if (form.children[1].children[0].innerHTML==="Recupero: "){
