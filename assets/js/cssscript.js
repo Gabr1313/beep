@@ -5,14 +5,13 @@ illumina = function (elemento,colore) {
     elemento.style.textShadow= "-1px 0 #ffffff, 0 1px #ffffff, 1px 0 #ffffff, 0 -1px #ffffff";
     elemento.style.border= "4px solid #5f1d21";
     setTimeout(function(){
+        elemento.onmouseover = () => BGGiallo(elemento);
+        elemento.onmouseout = () => BGBianco(elemento); //c'è qualche problema a far partire questa funzione dopo con il cambio di tipologia
         elemento.style.outline= "none";
         elemento.style.backgroundColor="white";
         elemento.style.textShadow= "none";
         elemento.style.border= "2px solid #5f1d21";
-
-        elemento.onmouseover = () => BGGiallo(elemento);
-        elemento.onmouseout = () => BGBianco(elemento); //c'è qualche problema a far partire questa funzione dopo con il cambio di tipologia
-    },200);
+    },150);
 }
 
 BGGiallo = function (elemento) {

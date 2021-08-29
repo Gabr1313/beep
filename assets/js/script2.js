@@ -46,9 +46,6 @@ aggiungiSessione = function (){//salva dati e aggiunge nella parte inferiore la 
     select[0].value=var2;
     select[1].innerHTML=form.children[1].children[3].innerHTML;
     select[1].value=var4;
-    select[0].style.backgroundColor = "white";//nel css non me lo prende e poi sul telefono cambia colore
-    select[0].style.backgroundColor = "white";
-
     parte.onsubmit = (event) => { event.preventDefault() }
 
     dove.appendChild(parte);
@@ -121,7 +118,6 @@ cambiaS = function (tipo,posizione){//fa lo switch tra le varie tipologie di imm
     if (posizione>=0){delta=2} //quando ci sono le freccine
     if (tipo===1 || tipo===2){button= form.getElementsByTagName("button")[0+delta]}
     else {button= form.getElementsByTagName("button")[1+delta]}
-    console.log(button)
     illumina(button,"verde");
 
     if (form.children[0].tagName!="SECTION"){j=1} //quando ci sono le freccine
@@ -232,35 +228,43 @@ cambiaIndice = function(form, posizione){//cambia l'indice di una sessione o di 
 
 sopra = function(posizione1, delta){//sposta sopra o sotto le sessioni/i recuperi
     //se delta=-1 --> sopra, se delta=1 -->sotto
-    let form1, posizione2, form2, t, j;
+    let form1, posizione2, form2, t, j, button;
     posizione2=posizione1+delta;
+    buttons=document.getElementById("parte"+posizione1).children[0].children;
+    if (delta===-1){button=buttons[0]}
+    else {button=buttons[1]}
+
     if (posizione2===-1 || posizione2===i) {//non posso anticipare il primo o posticipare l'ultimo
-        window.alert("non puoi!")
+        illumina(button,"rosso");
         return;
     }; 
-    if (delta===-1){
-        t=posizione1;
-        posizione1=posizione2;
-        posizione2=t;
-    }
-    form1=document.getElementById("parte"+posizione1);
-    form2=document.getElementById("parte"+posizione2);
-    vecchioDiv=form1.parentNode;
-    form1 = cambiaIndice(form1,posizione2);
-    form2 = cambiaIndice(form2,posizione1);
-    nuovoDiv=document.createElement("div");
-    j=0;
-    while(vecchioDiv.childElementCount>0){
-        if (j!==posizione1){
-            nuovoDiv.appendChild(vecchioDiv.children[0])
-        } else {
-            nuovoDiv.appendChild(form2);
-            nuovoDiv.appendChild(form1);
+
+    illumina(button,"verde");
+    setTimeout(function(){
+        if (delta===-1){
+            t=posizione1;
+            posizione1=posizione2;
+            posizione2=t;
         }
-        j++;
-    }
-    vecchioDiv.parentNode.appendChild(nuovoDiv);
-    vecchioDiv.parentNode.removeChild(vecchioDiv);
+        form1=document.getElementById("parte"+posizione1);
+        form2=document.getElementById("parte"+posizione2);
+        vecchioDiv=form1.parentNode;
+        form1 = cambiaIndice(form1,posizione2);
+        form2 = cambiaIndice(form2,posizione1);
+        nuovoDiv=document.createElement("div");
+        j=0;
+        while(vecchioDiv.childElementCount>0){
+            if (j!==posizione1){
+                nuovoDiv.appendChild(vecchioDiv.children[0])
+            } else {
+                nuovoDiv.appendChild(form2);
+                nuovoDiv.appendChild(form1);
+            }
+            j++;
+        }
+        vecchioDiv.parentNode.appendChild(nuovoDiv);
+        vecchioDiv.parentNode.removeChild(vecchioDiv);
+    },150);
 }
 
 comandiStart = function (){//prima creo la stringa, poi calcolo lunghezza e durata, chiedo conferma e passo alla pagina successiva
