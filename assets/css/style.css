@@ -171,6 +171,10 @@ ul{
 
 /* page3 */
 
+.page3 main{
+    margin-bottom: 75px;
+}
+
 .page3 form{
     background-color: #41131688;
 }
