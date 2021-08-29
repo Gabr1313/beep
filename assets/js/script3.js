@@ -6,7 +6,7 @@ creaSessione = function (pezzo) {
     parte.className='parte';
     if (pezzi[1]==="m/s" || pezzi[1]==="km/h") {
         p1="Velocità: ";
-    } else if (pezzi[1]==="s" || pezzi[1]==="m") {
+    } else if (pezzi[1]==="sec" || pezzi[1]==="min") {
         p1="Tempo al giro: ";
     };
     if (pezzi[3]==="sec" || pezzi[3]==="min") {
