@@ -101,7 +101,7 @@ aggiungiRecupero = function (){ //salva dati e aggiunge nella parte inferiore il
     `
     select=parte.getElementsByTagName("select");
     select[0].value=var2;
-    select[0].style.backgroundColor = "white";//nel css non me lo prende e poi sul telefono cambia colore
+    select[0].style.backgroundColor = "#eaad5a";//nel css non me lo prende e poi sul telefono cambia colore
 
     parte.onsubmit = (event) => { event.preventDefault() }
 
